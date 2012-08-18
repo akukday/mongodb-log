@@ -37,14 +37,11 @@ class MongoHandler(logging.Handler):
     def to(cls, db, collection, host='localhost', port=None, level=logging.NOTSET):
         """ Create a handler for a given  """
         return cls(Connection(host, port)[db][collection], level)
-        
-    def __init__(self, collection, db='mongolog', host='localhost', port=None, level=logging.NOTSET):
+
+    def __init__(self, collection, level=logging.NOTSET):
         """ Init log handler and store the collection handle """
         logging.Handler.__init__(self, level)
-        if (type(collection) == str):
-            self.collection = Connection(host, port)[db][collection]
-        else:
-            self.collection = collection
+        self.collection = collection
         self.formatter = MongoFormatter()
 
     def emit(self,record):
